@@ -246,14 +246,11 @@ const Play = () => {
     setIsTyping(true);
 
     try {
-      const messages = [
-        { role: 'system', content: SYSTEM_PROMPT },
-        ...chatMessages.filter(m => m.role !== 'system').map(m => ({
-          role: m.role,
-          content: m.content
-        })),
-        { role: 'user', content: chatInput }
-      ];
+      const messages: ChatMessage[] = [
+  { role: 'system', content: SYSTEM_PROMPT },
+  ...chatMessages.filter(m => m.role !== 'system'),
+  { role: 'user', content: chatInput }
+];
 
       const API_URL = import.meta.env.DEV
   ? "http://localhost:3000/api/chat"
@@ -279,10 +276,10 @@ if (
   data.candidates[0].content.parts &&
   data.candidates[0].content.parts[0]
 ) {
-  const assistantMessage = {
-    role: 'assistant',
-    content: data.candidates[0].content.parts[0].text
-  };
+  const assistantMessage: ChatMessage = {
+  role: 'assistant',
+  content: String(data.candidates[0].content.parts[0].text || '')
+};
 
   setChatMessages(prev => [...prev, assistantMessage]);
 } else {
